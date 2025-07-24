@@ -1,0 +1,132 @@
+<div class="printer-settings">
+  <div class="printer-setting-header">
+    <!-- عنوان -->
+    <div class="title">Printers Settings</div>
+    <!-- زر إضافة طابعة -->
+    <button class="add-btn" (click)="openModal()">
+      <i class="ri-printer-line"></i>
+      إضافة طابعة
+    </button>
+  </div>
+  <!-- نافذة المودال -->
+  <div class="modal-backdrop" *ngIf="showModal">
+    <div class="modal">
+      <h2>
+        {{ editingIndex === null ? "إضافة طابعة جديدة" : "تعديل الطابعة" }}
+      </h2>
+
+      <form (ngSubmit)="savePrinter()">
+        <input
+          type="text"
+          placeholder="اسم الطابعة"
+          [(ngModel)]="form.name"
+          name="name"
+          required
+        />
+
+        <select [(ngModel)]="form.type" name="type" required>
+          <option value="" disabled selected>نوع الطابعة</option>
+          <option value="thermal">حرارية</option>
+          <option value="dot-matrix">نقطية</option>
+          <option value="pdf">PDF</option>
+        </select>
+
+        <select
+          [(ngModel)]="form.port"
+          name="port"
+          (change)="onPortChange(form.port)"
+        >
+          <option value="USB">USB</option>
+          <option value="COM">COM</option>
+          <option value="NETWORK">IP/Port</option>
+          <option value="Bluetooth">Bluetooth</option>
+        </select>
+        <!-- حقل IP/Port إذا تم اختيار NETWORK -->
+        <input
+          *ngIf="showNetworkField"
+          type="text"
+          placeholder="IP أو Port"
+          [(ngModel)]="form.networkAddress"
+          name="networkAddress"
+        />
+        <select [(ngModel)]="form.language" name="language">
+          <option value="AR">AR</option>
+          <option value="EN">EN</option>
+          <option value="UTF-8">UTF-8</option>
+        </select>
+
+        <input
+          type="text"
+          placeholder="الموقع (مثل: مطبخ رئيسي)"
+          [(ngModel)]="form.location"
+          name="location"
+        />
+        <input
+          type="number"
+          placeholder="عدد النسخ"
+          [(ngModel)]="form.copies"
+          name="copies"
+          min="1"
+        />
+
+        <label class="custom-checkbox">
+          <input
+            type="checkbox"
+            [(ngModel)]="form.autoPrint"
+            name="autoPrint"
+          />
+          <span class="checkmark"></span>
+          الطباعة التلقائية
+        </label>
+
+        <input
+          type="text"
+          placeholder="التحكم بالتصميم (اسم القالب)"
+          [(ngModel)]="form.template"
+          name="template"
+        />
+
+        <div class="modal-actions">
+          <button type="submit">حفظ</button>
+          <button type="button" (click)="closeModal()">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- قائمة الطابعات -->
+<!-- عرض الطابعات إن وجدت -->
+<div class="printers-list" *ngIf="printers.length > 0; else noPrinters">
+  <div class="printer-card" *ngFor="let printer of printers; let i = index">
+    <img src="assets/images/printer.png" alt="Printer" class="printer-img" />
+    <h3>{{ printer.name }}</h3>
+
+    <ul class="printer-info">
+      <li><strong>النوع:</strong> <span>{{ printer.type }}</span></li>
+      <li><strong>المنفذ:</strong> <span>{{ printer.port }}</span></li>
+      <li *ngIf="printer.port === 'NETWORK' && printer.networkAddress">
+        <strong>IP / Port:</strong> <span>{{ printer.networkAddress }}</span>
+      </li>
+      <li><strong>اللغة:</strong> <span>{{ printer.language }}</span></li>
+      <li><strong>الموقع:</strong> <span>{{ printer.location || "-" }}</span></li>
+      <li><strong>عدد النسخ:</strong> <span>{{ printer.copies }}</span></li>
+      <li><strong>طباعة تلقائية:</strong> <span>{{ printer.autoPrint ? "نعم" : "لا" }}</span></li>
+      <li><strong>القالب:</strong> <span>{{ printer.template || "-" }}</span></li>
+    </ul>
+
+    <div class="actions">
+      <button class="edit" (click)="editPrinter(i)">تعديل</button>
+      <button class="delete" (click)="deletePrinter(i)">حذف</button>
+    </div>
+  </div>
+</div>
+
+<!-- عرض عند عدم وجود طابعات -->
+<ng-template #noPrinters>
+  <div class="no-printers">
+    <img src="assets/images/printer.png" alt="No Printers" />
+    <p>لا يوجد حالياً أجهزة مسجلة</p>
+  </div>
+</ng-template>
+
+</div>

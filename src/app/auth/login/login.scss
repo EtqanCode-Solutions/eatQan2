@@ -1,0 +1,265 @@
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  padding: 16px;
+  position: relative;
+  background: url("../../../assets/images/bg.jpg") no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+  box-sizing: border-box;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom right,
+      rgba(0, 0, 0, 0.9),
+      rgba(0, 0, 0, 0.5)
+    );
+    z-index: 1;
+  }
+
+  .login-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 32px;
+    background: rgba(255, 255, 255, 0.94);
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(8px);
+    text-align: center;
+    box-sizing: border-box;
+
+    .language-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 99;
+
+      button {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: none;
+        background: #ffffffee;
+        color: #007bff;
+        font-weight: bold;
+        font-size: 14px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.25);
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: #007bff;
+          color: white;
+          transform: scale(1.05);
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+    }
+
+    .logo {
+      width: 120px;
+      margin: 0 auto 24px;
+
+      img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        display: block;
+      }
+    }
+
+    h2 {
+      margin-bottom: 28px;
+      color: #1e1e1e;
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: -0.5px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+      text-align: left;
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1f2937;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #fff;
+        color: #1f2937;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        &::placeholder {
+          color: #999;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: #007bff;
+          box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+        }
+      }
+
+      .error {
+        font-size: 12px;
+        color: #d32f2f;
+        margin-top: 6px;
+      }
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 24px;
+      font-size: 14px;
+      color: #1f2937;
+
+      label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        user-select: none;
+
+        input[type="checkbox"] {
+          width: 16px;
+          height: 16px;
+          accent-color: #007bff;
+          cursor: pointer;
+        }
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(to right, #007bff, #0056d2);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.1s ease;
+
+      &:hover {
+        background: linear-gradient(to right, #0069e0, #004bb1);
+        transform: translateY(-1px);
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  // 💻 Medium screens (tablets)
+  @media (max-width: 768px) {
+    .login-container {
+      max-width: 90%;
+      padding: 32px 24px;
+
+      h2 {
+        font-size: 22px;
+      }
+
+      .form-group label {
+        font-size: 13px;
+      }
+
+      .form-group input {
+        font-size: 14px;
+        padding: 10px 12px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 12px;
+      }
+    }
+  }
+
+  // 📱 Small screens (phones)
+  @media (max-width: 480px) {
+    .login-container {
+      padding: 24px 20px;
+      border-radius: 16px;
+
+      .logo {
+        width: 90px;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+
+        label {
+          font-size: 13px;
+        }
+
+        input {
+          font-size: 13px;
+          padding: 10px;
+        }
+      }
+
+      .remember-me {
+        font-size: 13px;
+        margin-bottom: 20px;
+      }
+
+      button {
+        font-size: 13px;
+        padding: 10px;
+      }
+    }
+  }
+
+  // 🖥️ Large screens (full HD and more)
+  @media (min-width: 1440px) {
+    .login-container {
+      max-width: 420px;
+      padding: 48px 36px;
+
+      h2 {
+        font-size: 26px;
+      }
+
+      button {
+        font-size: 16px;
+        padding: 14px;
+      }
+    }
+  }
+}

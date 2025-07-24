@@ -1,0 +1,29 @@
+<aside class="sidebar">
+  <div class="logo">
+    <img src="assets/images/icon-white.png" alt="Company Logo" />
+    <div>{{ 'sidebar.dashboard' | translate }}</div>
+  </div>
+
+  <ul class="menu">
+    <li *ngFor="let item of menuItems" 
+        [class.active]="activePage === item.link" 
+        [class.expanded]="item.expanded"
+        (click)="toggleItem(item)">
+      
+      <div class="menu-title" [class.has-submenu]="item.hasSubmenu">
+        <a *ngIf="!item.hasSubmenu" [routerLink]="item.link">
+          {{ item.title | translate }}
+        </a>
+        <span *ngIf="item.hasSubmenu">{{ item.title | translate }}</span>
+        <i *ngIf="item.hasSubmenu" class="arrow" [class.rotate]="item.expanded"></i>
+      </div>
+
+      <!-- Submenu -->
+      <ul *ngIf="item.hasSubmenu" class="submenu" [class.open]="item.expanded">
+        <li *ngFor="let sub of item.subItems">
+          <a [routerLink]="sub.link">{{ sub.title | translate }}</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</aside>

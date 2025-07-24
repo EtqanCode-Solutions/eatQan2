@@ -1,0 +1,132 @@
+.dashboard-layout {
+  display: flex;
+  height: 100vh;
+
+  .sidebar {
+    width: 250px;
+    background-color: #1f2937;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    .logo {
+      text-align: center;
+      margin-bottom: 24px;
+
+      img {
+        max-width: 100px;
+      }
+    }
+
+    .menu {
+      list-style: none;
+      padding: 0;
+
+      > li {
+        margin-bottom: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        position: relative;
+
+        &.active,
+        &.open {
+          color: #00bcd4;
+        }
+
+        .submenu {
+          list-style: none;
+          margin-top: 8px;
+          padding-left: 16px;
+          animation: fadeIn 0.3s ease;
+
+          li {
+            margin-bottom: 6px;
+            font-weight: normal;
+            font-size: 14px;
+            color: #ccc;
+            cursor: pointer;
+
+            &:hover {
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background: #f3f4f6;
+
+    .topbar {
+      background: white;
+      padding: 12px 24px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .logo img {
+        height: 40px;
+      }
+
+      .user-info {
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+
+        .employee-name {
+          font-weight: 600;
+        }
+
+        .datetime {
+          color: #555;
+          font-size: 13px;
+        }
+      }
+    }
+
+    .content {
+      flex: 1;
+      padding: 32px;
+      overflow-y: auto;
+    }
+  }
+}
+.dashboard-layout {
+  display: flex;
+  height: 100vh; // ✅ لازم علشان يثبت ارتفاع الصفحة بالكامل بدون scroll
+
+  .sidebar {
+    width: 260px;
+    height: 100vh;
+    overflow-y: auto; // ✅ هو ده المفتاح الأساسي
+    flex-shrink: 0;
+
+    // باقي التنسيقات هنا...
+  }
+
+  .main-content {
+    flex: 1;
+    overflow-y: auto; // لو عايز Scroll فقط داخل المحتوى وليس كل الصفحة
+    height: 100vh;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

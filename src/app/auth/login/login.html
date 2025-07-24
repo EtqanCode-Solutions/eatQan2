@@ -1,0 +1,50 @@
+<div class="login-page">
+  <div class="login-container">
+    <div class="logo">
+      <img src="assets/images/FullLogo.png" alt="" />
+    </div>
+
+    <h2>{{ "LOGIN.TITLE" | translate }}</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">{{ "LOGIN.USERNAME" | translate }}</label>
+        <input
+          id="username"
+          formControlName="username"
+          type="text"
+          [placeholder]="'LOGIN.USERNAME_PLACEHOLDER' | translate"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">{{ "LOGIN.PASSWORD" | translate }}</label>
+        <input
+          id="password"
+          formControlName="password"
+          type="password"
+          [placeholder]="'LOGIN.PASSWORD_PLACEHOLDER' | translate"
+          required
+        />
+      </div>
+
+      <div class="remember-me">
+        <label>
+          <input type="checkbox" formControlName="rememberMe" />
+          {{ "LOGIN.REMEMBER_ME" | translate }}
+        </label>
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid || isSubmitting">
+        {{ "LOGIN.LOGIN_BUTTON" | translate }}
+      </button>
+    </form>
+    <!-- 🌐 زر اللغة الطافي -->
+    <div class="language-toggle">
+      <button (click)="toggleLang()">
+        {{ currentLang === "ar" ? "EN" : "ع" }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,216 @@
+<div class="menu-wrapper">
+  <!-- Tabs -->
+  <div class="tabs">
+    <button *ngFor="let tab of tabs" [class.active]="tab === activeTab" (click)="setTab(tab)">
+      {{ tab }}
+    </button>
+  </div>
+
+  <!-- ========== All Items ========== -->
+  <div class="tab-content" *ngIf="activeTab === 'All Items'">
+    <div class="categories">
+      <button *ngFor="let cat of menuData" (click)="filterByCategory(cat.category)" [class.active]="selectedCategory === cat.category">
+        {{ cat.category }}
+      </button>
+      <button class="reset" (click)="resetFilter()">عرض الكل</button>
+    </div>
+
+    <div class="items">
+      <ng-container *ngFor="let cat of menuData">
+        <div *ngIf="!selectedCategory || selectedCategory === cat.category" class="category-block">
+          <h3 class="category-title">{{ cat.category }}</h3>
+          <div class="item-list">
+            <div class="item" *ngFor="let item of cat.items">
+              <div class="left">
+                <span class="item-name">{{ item.name }}</span>
+              </div>
+              <div class="right">
+                <span class="item-price">{{ item.price | number:'1.0-2' }} ج.م</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- ========== Modifiers ========== -->
+  <div class="tab-content" *ngIf="activeTab === 'Modifiers'">
+    <div class="header-actions">
+      <h3>الإضافات (Modifiers)</h3>
+      <button class="add-btn" (click)="openAddModifierGroupDialog()">+ إضافة مجموعة إضافات</button>
+    </div>
+
+    <div class="modifier-group" *ngFor="let group of modifierGroups; let i = index">
+      <div class="group-head">
+        <div>
+          <h4>{{ group.name }}</h4>
+          <small class="rule">الحد الأدنى: {{ group.minSelect }} | الحد الأقصى: {{ group.maxSelect }}</small>
+          <small class="rule" *ngIf="group.required"> (إجباري) </small>
+        </div>
+        <div class="group-actions">
+          <button class="edit" (click)="editModifierGroup(i)">تعديل</button>
+          <button class="delete" (click)="deleteModifierGroup(i)">حذف</button>
+        </div>
+      </div>
+
+      <div class="group-items">
+        <div class="modifier-item" *ngFor="let mod of group.items; let j = index">
+          <span class="mod-name">{{ mod.name }}</span>
+          <span class="mod-price">+ {{ mod.price | number:'1.0-2' }} ج.م</span>
+          <div class="item-actions">
+            <button class="edit" (click)="editModifier(i, j)">تعديل</button>
+            <button class="delete" (click)="deleteModifier(i, j)">حذف</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="add-modifier" (click)="openItemDialog(i)">+ إضافة عنصر للمجموعة</button>
+    </div>
+
+    <div class="empty" *ngIf="!modifierGroups || modifierGroups.length === 0">
+      لا توجد إضافات بعد.
+    </div>
+  </div>
+
+  <!-- ========== Price Adjustments ========== -->
+  <div class="tab-content" *ngIf="activeTab === 'Price Adjustments'">
+    <div class="header-actions">
+      <h3>تعديلات الأسعار (Price Adjustments)</h3>
+      <button class="add-btn" (click)="openPriceRuleDialog()">+ إضافة قاعدة تسعير</button>
+    </div>
+
+    <div class="price-rules" *ngIf="priceRules.length > 0; else noRules">
+      <table class="rules-table">
+        <thead>
+          <tr>
+            <th>الاسم</th>
+            <th>النوع</th>
+            <th>القيمة</th>
+            <th>التطبيق</th>
+            <th>الفترة</th>
+            <th>الحالة</th>
+            <th>إجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let rule of priceRules; let i = index">
+            <td>{{ rule.name }}</td>
+            <td>
+              <span class="badge" [class.percentage]="rule.type === 'percentage'" [class.fixed]="rule.type === 'fixed'">
+                {{ rule.type === 'percentage' ? 'نسبة %' : 'قيمة ثابتة' }}
+              </span>
+            </td>
+            <td>
+              {{ rule.amount }}
+              <span>{{ rule.type === 'percentage' ? '%' : 'ج.م' }}</span>
+            </td>
+            <td>
+              <ng-container [ngSwitch]="rule.appliesTo.type">
+                <span *ngSwitchCase="'all'">كل العناصر</span>
+                <span *ngSwitchCase="'category'">فئة: {{ rule.appliesTo.value }}</span>
+                <span *ngSwitchCase="'item'">عنصر: {{ rule.appliesTo.value }}</span>
+              </ng-container>
+            </td>
+            <td>
+              {{ rule.startDate ? (rule.startDate | date:'shortDate') : '—' }} -
+              {{ rule.endDate ? (rule.endDate | date:'shortDate') : '—' }}
+            </td>
+            <td>
+              <span class="status" [class.active]="rule.isActive" [class.inactive]="!rule.isActive">
+                {{ rule.isActive ? 'مفعّل' : 'غير مفعّل' }}
+              </span>
+            </td>
+            <td class="actions">
+              <button class="edit" (click)="openPriceRuleDialog(i)">تعديل</button>
+              <button class="delete" (click)="deletePriceRule(i)">حذف</button>
+              <button class="toggle" (click)="togglePriceRule(i)">
+                {{ rule.isActive ? 'إيقاف' : 'تفعيل' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noRules>
+      <div class="empty">لا توجد قواعد تعديل أسعار حتى الآن.</div>
+    </ng-template>
+  </div>
+
+  <!-- ========== Dialog: Modifier Group ========= -->
+  <div class="dialog-overlay" *ngIf="showGroupDialog">
+    <div class="dialog-box">
+      <h3>{{ editingGroupIndex !== null ? 'تعديل المجموعة' : 'إضافة مجموعة جديدة' }}</h3>
+      <label>اسم المجموعة:</label>
+      <input type="text" [(ngModel)]="groupForm.name" />
+      <label>الحد الأدنى:</label>
+      <input type="number" [(ngModel)]="groupForm.minSelect" />
+      <label>الحد الأقصى:</label>
+      <input type="number" [(ngModel)]="groupForm.maxSelect" />
+      <label><input type="checkbox" [(ngModel)]="groupForm.required" /> إجباري</label>
+      <div class="actions">
+        <button class="save" (click)="saveGroup()">حفظ</button>
+        <button class="cancel" (click)="closeGroupDialog()">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== Dialog: Modifier Item ========== -->
+  <div class="dialog-overlay" *ngIf="showItemDialog">
+    <div class="dialog-box">
+      <h3>إضافة عنصر للمجموعة</h3>
+      <label>اسم العنصر:</label>
+      <input type="text" [(ngModel)]="itemForm.name" />
+      <label>السعر:</label>
+      <input type="number" [(ngModel)]="itemForm.price" />
+      <div class="actions">
+        <button class="save" (click)="saveItem()">إضافة</button>
+        <button class="cancel" (click)="closeItemDialog()">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== Dialog: Price Rule ========== -->
+  <div class="dialog-overlay" *ngIf="showPriceRuleDialog">
+    <div class="dialog-box">
+      <h3>{{ editingPriceRuleIndex !== null ? 'تعديل قاعدة تسعير' : 'إضافة قاعدة جديدة' }}</h3>
+      <label>الاسم:</label>
+      <input type="text" [(ngModel)]="priceRuleForm.name" />
+      <label>النوع:</label>
+      <select [(ngModel)]="priceRuleForm.type">
+        <option value="percentage">نسبة مئوية</option>
+        <option value="fixed">قيمة ثابتة</option>
+      </select>
+      <label>القيمة:</label>
+      <input type="number" [(ngModel)]="priceRuleForm.amount" />
+      <label>تطبيق على:</label>
+      <select [(ngModel)]="priceRuleForm.appliesTo.type">
+        <option value="all">كل العناصر</option>
+        <option value="category">فئة</option>
+        <option value="item">عنصر</option>
+      </select>
+      <input *ngIf="priceRuleForm.appliesTo.type !== 'all'" type="text" [(ngModel)]="priceRuleForm.appliesTo.value" placeholder="اسم الفئة أو العنصر" />
+      <label>من:</label>
+      <input type="date" [(ngModel)]="priceRuleForm.startDate" />
+      <label>إلى:</label>
+      <input type="date" [(ngModel)]="priceRuleForm.endDate" />
+      <label><input type="checkbox" [(ngModel)]="priceRuleForm.isActive" /> مفعل</label>
+      <div class="actions">
+        <button class="save" (click)="savePriceRule()">حفظ</button>
+        <button class="cancel" (click)="closePriceRuleDialog()">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== Confirm Delete Dialog ========== -->
+  <div class="confirm-overlay" *ngIf="confirmDialog.show">
+    <div class="confirm-box">
+      <p>{{ confirmDialog.message }}</p>
+      <div class="actions">
+        <button class="yes" (click)="confirmDialog.onConfirm()">نعم</button>
+        <button class="no" (click)="closeConfirm()">لا</button>
+      </div>
+    </div>
+  </div>
+</div>

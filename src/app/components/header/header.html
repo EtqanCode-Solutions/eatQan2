@@ -1,0 +1,15 @@
+<header class="topbar">
+  <div class="left">
+    <img class="company-logo" src="assets/images/FullLogo.png" alt="Company Logo" />
+  </div>
+
+  <div class="user-info">
+    <span class="employee-name">👤 {{ employeeName }}</span>
+    <span class="datetime">{{ currentDateTime }}</span>
+
+    <!-- 🌐 Language Switcher -->
+    <button class="lang-toggle" (click)="toggleLang()">
+      🌐 {{ currentLang === 'en' ? 'العربية' : 'English' }}
+    </button>
+  </div>
+</header>

@@ -1,0 +1,78 @@
+<div class="settings-container">
+  <h2>⚙️ إعدادات النظام</h2>
+
+  <div class="tabs">
+    <button [class.active]="activeTab === 'tax'" (click)="switchTab('tax')">الضرائب</button>
+    <button [class.active]="activeTab === 'fees'" (click)="switchTab('fees')">الرسوم</button>
+  </div>
+
+  <form class="settings-form">
+    <!-- ✅ الضرائب -->
+    <div *ngIf="activeTab === 'tax'">
+      <div class="form-group checkbox-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="form.isTaxEnabled" name="isTaxEnabled" />
+          <span>تفعيل الضريبة على الطلبات</span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>نوع الضريبة</label>
+        <select [(ngModel)]="form.taxType" name="taxType">
+          <option *ngFor="let t of taxTypes" [value]="t.value">{{ t.label }}</option>
+        </select>
+      </div>
+
+      <div *ngIf="form.taxType === 'percentage'">
+        <div class="form-group">
+          <label>نسبة ضريبة القيمة المضافة (%)</label>
+          <input type="number" min="0" [(ngModel)]="form.vatPercentage" name="vatPercentage" />
+        </div>
+
+        <div class="form-group">
+          <label>نسبة رسوم الخدمة (%)</label>
+          <input type="number" min="0" [(ngModel)]="form.serviceFeePercentage" name="serviceFeePercentage" />
+        </div>
+      </div>
+
+      <div *ngIf="form.taxType === 'fixed'" class="form-group">
+        <label>قيمة ضريبة ثابتة على كل طلب</label>
+        <input type="number" min="0" [(ngModel)]="form.fixedTaxAmount" name="fixedTaxAmount" />
+      </div>
+
+      <div class="form-group checkbox-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="form.externalOrdersOnly" name="externalOrdersOnly" />
+          <span>تطبيق الضريبة على الطلبات الخارجية فقط</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ✅ الرسوم -->
+    <div *ngIf="activeTab === 'fees'">
+      <div class="form-group checkbox-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="form.serviceFeeEnabled" name="serviceFeeEnabled" />
+          <span>تفعيل رسوم الخدمة</span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>نوع رسوم الخدمة</label>
+        <select [(ngModel)]="form.serviceFeeType" name="serviceFeeType">
+          <option value="percentage">نسبة مئوية</option>
+          <option value="fixed">قيمة ثابتة</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>قيمة رسوم الخدمة</label>
+        <input type="number" min="0" [(ngModel)]="form.serviceFeeValue" name="serviceFeeValue" />
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" (click)="save()">💾 حفظ الإعدادات</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,59 @@
+<div class="discounts-container">
+  <div class="tabs-header">
+    <button 
+      [class.active]="activeTab === 'coupon'" 
+      (click)="activeTab = 'coupon'">
+      🏷️ كوبون خصم
+    </button>
+    <button 
+      [class.active]="activeTab === 'direct'" 
+      (click)="activeTab = 'direct'">
+      💸 خصم مباشر
+    </button>
+  </div>
+
+  <div class="tab-content">
+    <!-- كوبون -->
+    <div *ngIf="activeTab === 'coupon'" class="coupon-form">
+      <form (ngSubmit)="saveCoupon()" #couponForm="ngForm">
+        <input 
+          type="text" 
+          placeholder="كود الكوبون" 
+          [(ngModel)]="couponFormModel.code" 
+          name="code" 
+          required 
+        />
+        <input 
+          type="number" 
+          placeholder="نسبة الخصم (%)" 
+          [(ngModel)]="couponFormModel.discount" 
+          name="discount" 
+          required 
+        />
+        <input 
+          type="date" 
+          [(ngModel)]="couponFormModel.expiryDate" 
+          name="expiryDate" 
+          required 
+        />
+        <button type="submit">💾 حفظ الكوبون</button>
+      </form>
+    </div>
+
+    <!-- خصم مباشر -->
+    <div *ngIf="activeTab === 'direct'" class="direct-discount-form">
+      <form (ngSubmit)="saveDirectDiscount()" #directForm="ngForm">
+        <input 
+          type="number" 
+          placeholder="قيمة الخصم (%)" 
+          [(ngModel)]="directDiscount.value" 
+          name="value" 
+          required 
+          min="1" 
+          max="100"
+        />
+        <button type="submit">💾 تطبيق الخصم المباشر</button>
+      </form>
+    </div>
+  </div>
+</div>

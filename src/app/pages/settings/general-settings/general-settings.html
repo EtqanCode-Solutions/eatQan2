@@ -1,0 +1,73 @@
+<div class="general-settings">
+  <h2>⚙️ الإعدادات العامة للنظام</h2>
+
+  <div class="settings-grid">
+
+    <!-- الواجهة -->
+    <div class="setting-box">
+      <h3>🌍 الواجهة</h3>
+
+      <label>اللغة الافتراضية</label>
+      <select [(ngModel)]="form.language">
+        <option *ngFor="let lang of languages" [value]="lang.code">{{ lang.label }}</option>
+      </select>
+
+      <label>العملة</label>
+      <select [(ngModel)]="form.currency">
+        <option *ngFor="let c of currencies" [value]="c">{{ c }}</option>
+      </select>
+
+      <label>المنطقة الزمنية</label>
+      <select [(ngModel)]="form.timezone">
+        <option *ngFor="let t of timezones" [value]="t.value">{{ t.label }}</option>
+      </select>
+
+      <label>صيغة التاريخ</label>
+      <select [(ngModel)]="form.dateFormat">
+        <option *ngFor="let df of dateFormats" [value]="df.value">{{ df.label }}</option>
+      </select>
+
+      <label>صيغة الوقت</label>
+      <select [(ngModel)]="form.timeFormat">
+        <option *ngFor="let tf of timeFormats" [value]="tf.value">{{ tf.label }}</option>
+      </select>
+
+      <label>
+        <input type="checkbox" [(ngModel)]="form.darkMode" />
+        تفعيل الوضع الليلي
+      </label>
+    </div>
+
+    <!-- الميزات -->
+    <div class="setting-box">
+      <h3>🛠️ الميزات</h3>
+      <label><input type="checkbox" [(ngModel)]="form.enablePrinters" /> تفعيل الطابعات</label>
+      <label><input type="checkbox" [(ngModel)]="form.enableDiscounts" /> تفعيل الخصومات</label>
+      <label><input type="checkbox" [(ngModel)]="form.allowEditAfterPayment" /> السماح بتعديل الطلب بعد الدفع</label>
+    </div>
+
+    <!-- الوقت -->
+    <div class="setting-box">
+      <h3>⏱️ الوقت</h3>
+      <label>مدة الجلسة قبل الخروج التلقائي (دقائق)</label>
+      <input type="number" [(ngModel)]="form.sessionTimeout" min="1" />
+
+      <label>الحد الأقصى لتأخير الطلب (دقائق)</label>
+      <input type="number" [(ngModel)]="form.orderDelayLimit" min="1" />
+
+      <label><input type="checkbox" [(ngModel)]="form.showCountdown" /> إظهار عد تنازلي للطلب</label>
+    </div>
+
+    <!-- الفاتورة -->
+    <div class="setting-box">
+      <h3>🧾 الفاتورة</h3>
+      <label><input type="checkbox" [(ngModel)]="form.showQRCodeOnInvoice" /> عرض QR على الفاتورة</label>
+      <label><input type="checkbox" [(ngModel)]="form.showCashierName" /> عرض اسم الكاشير</label>
+    </div>
+
+  </div>
+
+  <div class="actions">
+    <button (click)="saveSettings()">💾 حفظ الإعدادات</button>
+  </div>
+</div>
