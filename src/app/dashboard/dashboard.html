@@ -1,10 +1,55 @@
-<!-- dashboard.component.html -->
 <div class="dashboard-layout">
   <app-sidebar class="sidebar"></app-sidebar>
   <div class="main">
     <app-header></app-header>
     <section class="content">
-      <router-outlet></router-outlet> <!-- child routes -->
+      <!-- <div class="overview-stats">
+        <div class="stat-card">
+          <h4>عدد الفئات</h4>
+          <p>{{ categories.length }}</p>
+        </div>
+        <div class="stat-card">
+          <h4>عدد العناصر</h4>
+          <p>{{ allItems.length }}</p>
+        </div>
+        <div class="stat-card" *ngIf="allItems.length">
+          <h4>أغلى عنصر</h4>
+          <p>{{ getMostExpensiveItem().name }} - {{ getMostExpensiveItem().price }} ج.م</p>
+        </div>
+        <div class="stat-card" *ngIf="allItems.length">
+          <h4>أرخص عنصر</h4>
+          <p>{{ getCheapestItem().name }} - {{ getCheapestItem().price }} ج.م</p>
+        </div>
+        <div class="stat-card">
+          <h4>إجمالي الأرباح</h4>
+          <p>{{ totalProfit }} ج.م</p>
+        </div>
+        <div class="stat-card">
+          <h4>إجمالي الخسائر</h4>
+          <p>{{ totalLoss }} ج.م</p>
+        </div>
+      </div>
+
+      <div class="charts-section">
+        <div class="chart-card">
+          <h4>الرسم البياني للمبيعات (شهري)</h4>
+          <canvas baseChart
+                  [data]="salesChartData"
+                  chartType="bar">
+          </canvas>
+        </div>
+
+        <div class="top-selling">
+          <h4>المنتجات الأكثر مبيعًا</h4>
+          <ul>
+            <li *ngFor="let item of getTopSellingItems()">
+              {{ item.name }} - {{ item.sold }} قطعة
+            </li>
+          </ul>
+        </div>
+      </div> -->
+
+      <router-outlet></router-outlet> 
     </section>
   </div>
 </div>
